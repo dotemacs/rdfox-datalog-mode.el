@@ -8,8 +8,7 @@ Emacs major mode for editing RDFox Datalog `.dlog` files.
 
 ```elisp
 (use-package rdfox-datalog-mode
-  :vc (:fetcher github
-       :repo "dotemacs/rdfox-datalog-mode.el"))
+  :vc (:url "https://github.com/dotemacs/rdfox-datalog-mode.el"))
 ```
 
 ### Manual
