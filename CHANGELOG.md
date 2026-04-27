@@ -1,3 +1,11 @@
+## 0.1.1
+
+### Fixed
+
+- Fixed RDFox Datalog indentation so comma-separated rule body atoms
+  align correctly and new clauses reset to top-level indentation after
+  `.`.
+
 ## 0.1.0
 
 ### Added

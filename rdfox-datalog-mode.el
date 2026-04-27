@@ -2,7 +2,7 @@
 
 ;; Author: Aleksandar Simic <a@repl.ist>
 ;; Keywords: languages, convenience
-;; Version: 0.1.0
+;; Version: 0.1.1
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -126,14 +126,20 @@ Return point if found, otherwise nil."
     (looking-at-p (rx (or ")" "]" ".")))))
 
 (defun rdfox-datalog--previous-line-opens-body-p ()
-  "Return non-nil if the previous significant line opens a continuation block."
+  "Return non-nil if the previous significant line opens a rule body."
   (save-excursion
     (when (rdfox-datalog--previous-significant-line)
       (end-of-line)
       (skip-chars-backward " \t")
-      (or (looking-back ":-" (line-beginning-position))
-          (looking-back "[][(),]$" (line-beginning-position))
-          (looking-back ",$" (line-beginning-position))))))
+      (looking-back ":-" (line-beginning-position)))))
+
+(defun rdfox-datalog--previous-line-ends-clause-p ()
+  "Return non-nil if the previous significant line terminates a clause."
+  (save-excursion
+    (when (rdfox-datalog--previous-significant-line)
+      (end-of-line)
+      (skip-chars-backward " \t")
+      (looking-back "\\." (line-beginning-position)))))
 
 (defun rdfox-datalog-compute-indentation ()
   "Compute indentation for the current line."
@@ -149,6 +155,8 @@ Return point if found, otherwise nil."
            (rdfox-datalog--previous-significant-line)
            (current-indentation))
          rdfox-datalog-indent-offset))
+     ((rdfox-datalog--previous-line-ends-clause-p)
+      0)
      (t
       (or (save-excursion
             (when (rdfox-datalog--previous-significant-line)
